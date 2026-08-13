@@ -41,7 +41,7 @@ Shader "Hidden/Post FX/Uber Shader"
         sampler2D _ChromaticAberration_Spectrum;
 
         // Depth of field
-        sampler2D_float _CameraDepthTexture;
+        UNITY_DECLARE_DEPTH_TEXTURE(_CameraDepthTexture);
         sampler2D _DepthOfFieldTex;
         sampler2D _DepthOfFieldCoCTex;
         float4 _DepthOfFieldTex_TexelSize;
@@ -187,7 +187,7 @@ Shader "Hidden/Post FX/Uber Shader"
             {
                 // Calculate the radiuses of CoC.
                 half4 src = tex2D(_DepthOfFieldTex, uv);
-                float depth = LinearEyeDepth(SAMPLE_DEPTH_TEXTURE(_CameraDepthTexture, i.uvFlippedSPR));
+                float depth = LinearEyeDepth(UNITY_SAMPLE_DEPTH_TEXTURE(_CameraDepthTexture, i.uvFlippedSPR));
                 float coc = (depth - _DepthOfFieldParams.x) * _DepthOfFieldParams.y / depth;
                 coc *= 80;
 

@@ -48,7 +48,7 @@ static const float kBeta = 0.002;
 
 // System built-in variables
 sampler2D _CameraGBufferTexture2;
-sampler2D_float _CameraDepthTexture;
+UNITY_DECLARE_DEPTH_TEXTURE(_CameraDepthTexture);
 sampler2D _CameraDepthNormalsTexture;
 
 float4 _CameraDepthTexture_ST;
@@ -104,7 +104,7 @@ float CheckBounds(float2 uv, float d)
 float SampleDepth(float2 uv)
 {
 #if defined(SOURCE_GBUFFER) || defined(SOURCE_DEPTH)
-    float d = LinearizeDepth(SAMPLE_DEPTH_TEXTURE(_CameraDepthTexture, uv));
+    float d = LinearizeDepth(UNITY_SAMPLE_DEPTH_TEXTURE(_CameraDepthTexture, uv));
 #else
     float4 cdn = tex2D(_CameraDepthNormalsTexture, uv);
     float d = DecodeFloatRG(cdn.zw);
@@ -309,7 +309,7 @@ half4 FragAO(VaryingsMultitex i) : SV_Target
 
     // Apply fog when enabled (forward-only)
 #if !FOG_OFF
-    float d = Linear01Depth(SAMPLE_DEPTH_TEXTURE(_CameraDepthTexture, uv));
+    float d = Linear01Depth(UNITY_SAMPLE_DEPTH_TEXTURE(_CameraDepthTexture, uv));
     d = ComputeDistance(d);
     ao *= ComputeFog(d);
 #endif

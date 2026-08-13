@@ -4,28 +4,15 @@ using UnityEngine.SceneManagement;
 
 public class SceneHandling : MonoBehaviour
 {
-    [SerializeField] private GameObject LeftController;
-    [SerializeField] private GameObject RightController;
+    [SerializeField] private GameObject LeftSaber;
+    [SerializeField] private GameObject LeftShaft;
+    [SerializeField] private GameObject LeftModel;
+
+    [SerializeField] private GameObject RightSaber;
+    [SerializeField] private GameObject RightShaft;
+    [SerializeField] private GameObject RightModel;
+
     [SerializeField] private Behaviour RightUIPointer;
-
-    GameObject LeftSaber;
-    GameObject LeftShaft;
-    GameObject LeftModel;
-
-    GameObject RightSaber;
-    GameObject RightShaft;
-    GameObject RightModel;
-
-    private void Awake()
-    {
-        LeftSaber = LeftController.transform.Find("Saber").gameObject;
-        LeftShaft = LeftController.transform.Find("Shaft").gameObject;
-        LeftModel = LeftController.transform.Find("Model").gameObject;
-
-        RightSaber = RightController.transform.Find("Saber").gameObject;
-        RightShaft = RightController.transform.Find("Shaft").gameObject;
-        RightModel = RightController.transform.Find("Model").gameObject;
-    }
 
     private void MenuSceneLoaded()
     {

@@ -5,7 +5,7 @@
 #include "Common.cginc"
 
 // Camera depth texture
-sampler2D_float _CameraDepthTexture;
+UNITY_DECLARE_DEPTH_TEXTURE(_CameraDepthTexture);
 
 // Camera motion vectors texture
 sampler2D_half _CameraMotionVectorsTexture;
@@ -87,7 +87,7 @@ half4 FragVelocitySetup(VaryingsDefault i) : SV_Target
     v /= max(1.0, length(v) * _RcpMaxBlurRadius);
 
     // Sample the depth of the pixel.
-    half d = LinearizeDepth(SAMPLE_DEPTH_TEXTURE(_CameraDepthTexture, i.uv));
+    half d = LinearizeDepth(UNITY_SAMPLE_DEPTH_TEXTURE(_CameraDepthTexture, i.uv));
 
     // Pack into 10/10/10/2 format.
     return half4((v * _RcpMaxBlurRadius + 1.0) * 0.5, d, 0.0);

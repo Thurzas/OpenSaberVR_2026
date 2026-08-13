@@ -27,7 +27,7 @@ Shader "Hidden/Post FX/Fog"
             return o;
         }
 
-        sampler2D _CameraDepthTexture;
+        UNITY_DECLARE_DEPTH_TEXTURE(_CameraDepthTexture);
 
         half4 _FogColor;
         float _Density;
@@ -59,7 +59,7 @@ Shader "Hidden/Post FX/Fog"
         {
             half4 color = tex2D(_MainTex, i.uv);
 
-            float depth = SAMPLE_DEPTH_TEXTURE(_CameraDepthTexture, i.uv);
+            float depth = UNITY_SAMPLE_DEPTH_TEXTURE(_CameraDepthTexture, i.uv);
             depth = Linear01Depth(depth);
             float dist = ComputeDistance(depth);
             half fog = 1.0 - ComputeFog(dist);
@@ -71,7 +71,7 @@ Shader "Hidden/Post FX/Fog"
         {
             half4 color = tex2D(_MainTex, i.uv);
 
-            float depth = SAMPLE_DEPTH_TEXTURE(_CameraDepthTexture, i.uv);
+            float depth = UNITY_SAMPLE_DEPTH_TEXTURE(_CameraDepthTexture, i.uv);
             depth = Linear01Depth(depth);
             float skybox = depth < SKYBOX_THREASHOLD_VALUE;
             float dist = ComputeDistance(depth);
