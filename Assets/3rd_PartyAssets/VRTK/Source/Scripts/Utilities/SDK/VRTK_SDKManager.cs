@@ -891,6 +891,21 @@ namespace VRTK
             }
         }
 
+        private static readonly List<XRDisplaySubsystem> xrDisplaySubsystems = new List<XRDisplaySubsystem>();
+
+        private static bool IsXRDevicePresent()
+        {
+            SubsystemManager.GetSubsystems(xrDisplaySubsystems);
+            for (int i = 0; i < xrDisplaySubsystems.Count; i++)
+            {
+                if (xrDisplaySubsystems[i].running)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         private IEnumerator FinishSDKSetupLoading(VRTK_SDKSetup[] sdkSetups, VRTK_SDKSetup previousLoadedSetup)
         {
             yield return null;
@@ -915,7 +930,7 @@ namespace VRTK
                 // The loaded VR Device is actually a VR Device
                 XRSettings.enabled = true;
 
-                if (!XRDevice.isPresent)
+                if (!IsXRDevicePresent())
                 {
                     // Despite being loaded, the loaded VR Device isn't working correctly
                     int nextSetupIndex = Array.IndexOf(sdkSetups, loadedSetup) + 1;

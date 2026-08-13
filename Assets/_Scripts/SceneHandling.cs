@@ -1,12 +1,12 @@
-﻿using System.Collections;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using VRTK;
 
 public class SceneHandling : MonoBehaviour
 {
-    GameObject LeftController;
-    GameObject RightController;
+    [SerializeField] private GameObject LeftController;
+    [SerializeField] private GameObject RightController;
+    [SerializeField] private Behaviour RightUIPointer;
 
     GameObject LeftSaber;
     GameObject LeftShaft;
@@ -16,20 +16,8 @@ public class SceneHandling : MonoBehaviour
     GameObject RightShaft;
     GameObject RightModel;
 
-    VRTK_Pointer RightUIPointer;
-
-    bool VRTK_Loaded = false;
-
     private void Awake()
     {
-        VRTK_SDKManager.SubscribeLoadedSetupChanged(VRSetupLoaded);
-    }
-
-    private void VRSetupLoaded(VRTK_SDKManager sender, VRTK_SDKManager.LoadedSetupChangeEventArgs e)
-    {
-        LeftController = e.currentSetup.actualLeftController;
-        RightController = e.currentSetup.actualRightController;
-
         LeftSaber = LeftController.transform.Find("Saber").gameObject;
         LeftShaft = LeftController.transform.Find("Shaft").gameObject;
         LeftModel = LeftController.transform.Find("Model").gameObject;
@@ -37,21 +25,13 @@ public class SceneHandling : MonoBehaviour
         RightSaber = RightController.transform.Find("Saber").gameObject;
         RightShaft = RightController.transform.Find("Shaft").gameObject;
         RightModel = RightController.transform.Find("Model").gameObject;
-
-        RightUIPointer = RightController.transform.Find("RightController").GetComponent<VRTK_Pointer>();
-
-        VRTK_Loaded = true;
-        MenuSceneLoaded();
     }
 
     private void MenuSceneLoaded()
     {
-        if (!VRTK_Loaded)
-            return;
-
         LeftSaber.SetActive(false);
         LeftShaft.SetActive(false);
-        
+
         RightSaber.SetActive(false);
         RightShaft.SetActive(false);
 
@@ -73,11 +53,6 @@ public class SceneHandling : MonoBehaviour
         RightUIPointer.enabled = false;
     }
 
-    private void OnDestroy()
-    {
-        VRTK_SDKManager.UnsubscribeLoadedSetupChanged(VRSetupLoaded);
-    }
-
     private void Start()
     {
         if (!IsSceneLoaded("Menu"))
@@ -85,10 +60,7 @@ public class SceneHandling : MonoBehaviour
             StartCoroutine(LoadScene("Menu", LoadSceneMode.Additive));
         }
 
-        if (VRTK_Loaded)
-        {
-            MenuSceneLoaded();
-        }
+        MenuSceneLoaded();
     }
 
     internal IEnumerator LoadScene(string sceneName, LoadSceneMode mode)

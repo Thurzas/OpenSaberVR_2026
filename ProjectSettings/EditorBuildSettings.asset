@@ -14,4 +14,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_Scenes/OpenSaber.unity
     guid: 37aa8d289046f3a48bb02b36f3113d87
-  m_configObjects: {}
+  m_configObjects:
+    Unity.XR.Oculus.Settings: {fileID: 11400000, guid: 07d513cc083d86c4198d88fde7b60afe,
+      type: 2}
+    com.unity.xr.management.loader_settings: {fileID: 11400000, guid: e225576c84094424889825aead3760e3,
+      type: 2}
+    com.unity.xr.openxr.settings4: {fileID: 11400000, guid: 1c3c357132b5f6c40a171404ecab76db,
+      type: 2}

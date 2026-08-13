@@ -13,9 +13,9 @@ using System.Text.RegularExpressions;
 public class SteamVR_Update : EditorWindow
 {
 	const string currentVersion = "1.2.3";
-	const string versionUrl = "http://media.steampowered.com/apps/steamvr/unitypluginversion.txt";
-	const string notesUrl = "http://media.steampowered.com/apps/steamvr/unityplugin-v{0}.txt";
-	const string pluginUrl = "http://u3d.as/content/valve-corporation/steam-vr-plugin";
+	const string versionUrl = "https://media.steampowered.com/apps/steamvr/unitypluginversion.txt";
+	const string notesUrl = "https://media.steampowered.com/apps/steamvr/unityplugin-v{0}.txt";
+	const string pluginUrl = "https://u3d.as/content/valve-corporation/steam-vr-plugin";
 	const string doNotShowKey = "SteamVR.DoNotShow.v{0}";
 
 	static bool gotVersion = false;

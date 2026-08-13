@@ -121,6 +121,9 @@ public class SteamVR_Settings : EditorWindow
 
 #if (UNITY_5_4 || UNITY_5_3 || UNITY_5_2 || UNITY_5_1 || UNITY_5_0)
 			var devices = UnityEditorInternal.VR.VREditor.GetVREnabledDevices(BuildTargetGroup.Standalone);
+#elif UNITY_6000_0_OR_NEWER
+			// VREditor.GetVREnabledDevicesOnTargetGroup was removed in Unity 6; the legacy VR device list can no longer be read here.
+			var devices = new string[0];
 #else
 			var devices = UnityEditorInternal.VR.VREditor.GetVREnabledDevicesOnTargetGroup(BuildTargetGroup.Standalone);
 #endif
