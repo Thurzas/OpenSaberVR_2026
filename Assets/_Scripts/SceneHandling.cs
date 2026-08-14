@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.PostProcessing;
 using UnityEngine.SceneManagement;
 
 public class SceneHandling : MonoBehaviour
@@ -14,6 +15,10 @@ public class SceneHandling : MonoBehaviour
 
     [SerializeField] private Behaviour RightUIPointer;
 
+    [SerializeField] private PostProcessingBehaviour PostProcessing;
+    [SerializeField] private PostProcessingProfile MenuProfile;
+    [SerializeField] private PostProcessingProfile GameplayProfile;
+
     private void MenuSceneLoaded()
     {
         LeftSaber.SetActive(false);
@@ -25,6 +30,7 @@ public class SceneHandling : MonoBehaviour
         LeftModel.SetActive(true);
         RightModel.SetActive(true);
         RightUIPointer.enabled = true;
+        PostProcessing.profile = MenuProfile;
     }
 
     private void SaberSceneLoaded()
@@ -38,6 +44,7 @@ public class SceneHandling : MonoBehaviour
         LeftModel.SetActive(false);
         RightModel.SetActive(false);
         RightUIPointer.enabled = false;
+        PostProcessing.profile = GameplayProfile;
     }
 
     private void Start()
