@@ -82,20 +82,44 @@ public class NotesSpawner : MonoBehaviour
         var bpm = Convert.ToDouble(Songsettings.CurrentSong.BPM);
 
         //Notes
-        var notes = json.GetArray("_notes");
-        foreach (var note in notes)
+        if (json.ContainsKey("colorNotes"))
         {
-            var n = new Note
+            // v3 map format: notes moved to "colorNotes", fields renamed
+            // (c/d/x/y/b), but the underlying enum values are unchanged.
+            var notes = json.GetArray("colorNotes");
+            foreach (var note in notes)
             {
-                Hand = (NoteType)note.Obj.GetNumber("_type"),
-                CutDirection = (CutDirection)note.Obj.GetNumber("_cutDirection"),
-                LineIndex = (int)note.Obj.GetNumber("_lineIndex"),
-                LineLayer = (int)note.Obj.GetNumber("_lineLayer"),
-                TimeInSeconds = (note.Obj.GetNumber("_time") / bpm) * 60,
-                Time = (note.Obj.GetNumber("_time"))
-            };
+                var n = new Note
+                {
+                    Hand = (NoteType)note.Obj.GetNumber("c"),
+                    CutDirection = (CutDirection)note.Obj.GetNumber("d"),
+                    LineIndex = (int)note.Obj.GetNumber("x"),
+                    LineLayer = (int)note.Obj.GetNumber("y"),
+                    TimeInSeconds = (note.Obj.GetNumber("b") / bpm) * 60,
+                    Time = (note.Obj.GetNumber("b"))
+                };
 
-            NotesToSpawn.Add(n);
+                NotesToSpawn.Add(n);
+            }
+        }
+        else
+        {
+            // Legacy v2 map format.
+            var notes = json.GetArray("_notes");
+            foreach (var note in notes)
+            {
+                var n = new Note
+                {
+                    Hand = (NoteType)note.Obj.GetNumber("_type"),
+                    CutDirection = (CutDirection)note.Obj.GetNumber("_cutDirection"),
+                    LineIndex = (int)note.Obj.GetNumber("_lineIndex"),
+                    LineLayer = (int)note.Obj.GetNumber("_lineLayer"),
+                    TimeInSeconds = (note.Obj.GetNumber("_time") / bpm) * 60,
+                    Time = (note.Obj.GetNumber("_time"))
+                };
+
+                NotesToSpawn.Add(n);
+            }
         }
 
         //Obstacles
