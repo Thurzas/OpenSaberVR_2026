@@ -31,6 +31,11 @@ public class SceneHandling : MonoBehaviour
         RightModel.SetActive(true);
         RightUIPointer.enabled = true;
         PostProcessing.profile = MenuProfile;
+
+        if (IsSceneLoaded("Score_UI"))
+        {
+            StartCoroutine(UnloadScoreUIRoutine());
+        }
     }
 
     private void SaberSceneLoaded()
@@ -45,6 +50,18 @@ public class SceneHandling : MonoBehaviour
         RightModel.SetActive(false);
         RightUIPointer.enabled = false;
         PostProcessing.profile = GameplayProfile;
+
+        StartCoroutine(LoadScoreUIRoutine());
+    }
+
+    private IEnumerator LoadScoreUIRoutine()
+    {
+        yield return SceneManager.LoadSceneAsync("Score_UI", LoadSceneMode.Additive);
+    }
+
+    private IEnumerator UnloadScoreUIRoutine()
+    {
+        yield return SceneManager.UnloadSceneAsync("Score_UI");
     }
 
     private void Start()
