@@ -246,7 +246,7 @@ namespace VRTK
             if (ArePhysicsEnabled())
             {
                 Vector3 appliedGravity = new Vector3(0f, gravityPush, 0f);
-                bodyRigidbody.velocity = velocity + appliedGravity;
+                bodyRigidbody.linearVelocity = velocity + appliedGravity;
                 ApplyBodyMomentum(applyMomentum);
                 StartFall(currentValidFloorObject);
             }
@@ -329,7 +329,7 @@ namespace VRTK
         /// <returns>The velocity of the body physics rigidbody.</returns>
         public virtual Vector3 GetVelocity()
         {
-            return (bodyRigidbody != null ? bodyRigidbody.velocity : Vector3.zero);
+            return (bodyRigidbody != null ? bodyRigidbody.linearVelocity : Vector3.zero);
         }
 
         /// <summary>
@@ -346,7 +346,7 @@ namespace VRTK
         /// </summary>
         public virtual void ResetVelocities()
         {
-            bodyRigidbody.velocity = Vector3.zero;
+            bodyRigidbody.linearVelocity = Vector3.zero;
             bodyRigidbody.angularVelocity = Vector3.zero;
         }
 
@@ -1013,8 +1013,8 @@ namespace VRTK
             {
                 HasExistingRigidbody();
                 bodyRigidbody.mass = customPlayAreaRigidbody.mass;
-                bodyRigidbody.drag = customPlayAreaRigidbody.drag;
-                bodyRigidbody.angularDrag = customPlayAreaRigidbody.angularDrag;
+                bodyRigidbody.linearDamping = customPlayAreaRigidbody.linearDamping;
+                bodyRigidbody.angularDamping = customPlayAreaRigidbody.angularDamping;
                 bodyRigidbody.useGravity = customPlayAreaRigidbody.useGravity;
                 bodyRigidbody.isKinematic = customPlayAreaRigidbody.isKinematic;
                 bodyRigidbody.interpolation = customPlayAreaRigidbody.interpolation;
@@ -1419,7 +1419,7 @@ namespace VRTK
         {
             if (applyMomentum)
             {
-                float rigidBodyMagnitude = bodyRigidbody.velocity.magnitude;
+                float rigidBodyMagnitude = bodyRigidbody.linearVelocity.magnitude;
                 Vector3 appliedMomentum = playAreaVelocity / (rigidBodyMagnitude < 1f ? 1f : rigidBodyMagnitude);
                 bodyRigidbody.AddRelativeForce(appliedMomentum, ForceMode.VelocityChange);
             }

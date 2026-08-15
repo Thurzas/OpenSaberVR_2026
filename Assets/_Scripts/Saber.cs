@@ -1,42 +1,37 @@
-﻿using UnityEngine;
-using VRTK;
+using UnityEngine;
+using UnityEngine.XR;
 
 public class Saber : MonoBehaviour
 {
     public LayerMask layer;
+    [SerializeField] private XRNode hand = XRNode.RightHand;
+
     private Vector3 previousPos;
     private Slice slicer;
 
     private float impactMagnifier = 120f;
     private float collisionForce = 0f;
     private float maxCollisionForce = 4000f;
-    private VRTK_ControllerReference controllerReference;
 
     private void Start()
     {
         slicer = GetComponentInChildren<Slice>(true);
-        var controllerEvent = GetComponentInChildren<VRTK_ControllerEvents>(true);
-        if (controllerEvent != null && controllerEvent.gameObject != null)
-        {
-            controllerReference = VRTK_ControllerReference.GetControllerReference(controllerEvent.gameObject);
-        }
     }
 
     private void Pulse()
     {
-        if (VRTK_ControllerReference.IsValid(controllerReference))
+        var device = InputDevices.GetDeviceAtXRNode(hand);
+        if (!device.isValid || !device.TryGetFeatureValue(CommonUsages.deviceVelocity, out var velocity))
         {
-            collisionForce = VRTK_DeviceFinder.GetControllerVelocity(controllerReference).magnitude * impactMagnifier;
-            var hapticStrength = collisionForce / maxCollisionForce;
-            VRTK_ControllerHaptics.TriggerHapticPulse(controllerReference, hapticStrength, 0.5f, 0.01f);
+            return;
         }
-        else
+
+        collisionForce = velocity.magnitude * impactMagnifier;
+        var hapticStrength = Mathf.Clamp01(collisionForce / maxCollisionForce);
+
+        if (device.TryGetHapticCapabilities(out var capabilities) && capabilities.supportsImpulse)
         {
-            var controllerEvent = GetComponentInChildren<VRTK_ControllerEvents>();
-            if (controllerEvent != null && controllerEvent.gameObject != null)
-            {
-                controllerReference = VRTK_ControllerReference.GetControllerReference(controllerEvent.gameObject);
-            }
+            device.SendHapticImpulse(0u, hapticStrength, 0.5f);
         }
     }
 
@@ -63,7 +58,7 @@ public class Saber : MonoBehaviour
                 }
             }
         }
-        
+
         previousPos = transform.position;
     }
 

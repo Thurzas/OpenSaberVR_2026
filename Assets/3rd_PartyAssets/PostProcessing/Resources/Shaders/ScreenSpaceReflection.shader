@@ -125,7 +125,7 @@ Shader "Hidden/Post FX/Screen Space Reflection"
         {
             float3 P;
 
-            P.z = SAMPLE_DEPTH_TEXTURE(_CameraDepthTexture, ssP.xy);
+            P.z = UNITY_SAMPLE_DEPTH_TEXTURE(_CameraDepthTexture, ssP.xy);
 
             // Offset to pixel center
             P = ReconstructCSPosition(float2(ssP) /*+ float2(0.5, 0.5)*/, P.z);
@@ -771,7 +771,7 @@ Shader "Hidden/Post FX/Screen Space Reflection"
 
         float4 fragDepthToCSZ(v2f i) : SV_Target
         {
-            float depth = SAMPLE_DEPTH_TEXTURE(_CameraDepthTexture, i.uv2.xy);
+            float depth = UNITY_SAMPLE_DEPTH_TEXTURE(_CameraDepthTexture, i.uv2.xy);
             return float4(-LinearEyeDepth(depth), 0.0, 0.0, 0.0);
         }
 

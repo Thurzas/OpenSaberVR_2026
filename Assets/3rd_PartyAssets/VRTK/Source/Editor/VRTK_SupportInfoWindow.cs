@@ -124,7 +124,10 @@ namespace VRTK
                         }
 
                         string[] vrEnabledDevices;
-#if UNITY_5_5_OR_NEWER
+#if UNITY_6000_0_OR_NEWER
+                        // VREditor.GetVREnabledDevicesOnTargetGroup was removed in Unity 6; the legacy VR device list can no longer be read here.
+                        vrEnabledDevices = new string[0];
+#elif UNITY_5_5_OR_NEWER
                         vrEnabledDevices = VREditor.GetVREnabledDevicesOnTargetGroup(targetGroup);
 #else
                         vrEnabledDevices = VREditor.GetVREnabledDevices(targetGroup);

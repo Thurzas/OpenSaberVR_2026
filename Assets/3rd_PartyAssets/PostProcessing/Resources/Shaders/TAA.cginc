@@ -37,7 +37,7 @@ struct OutputSolver
 sampler2D _HistoryTex;
 
 sampler2D _CameraMotionVectorsTexture;
-sampler2D _CameraDepthTexture;
+UNITY_DECLARE_DEPTH_TEXTURE(_CameraDepthTexture);
 
 float4 _HistoryTex_TexelSize;
 float4 _CameraDepthTexture_TexelSize;
@@ -67,10 +67,10 @@ float2 GetClosestFragment(float2 uv)
 {
     const float2 k = _CameraDepthTexture_TexelSize.xy;
     const float4 neighborhood = float4(
-        SAMPLE_DEPTH_TEXTURE(_CameraDepthTexture, uv - k),
-        SAMPLE_DEPTH_TEXTURE(_CameraDepthTexture, uv + float2(k.x, -k.y)),
-        SAMPLE_DEPTH_TEXTURE(_CameraDepthTexture, uv + float2(-k.x, k.y)),
-        SAMPLE_DEPTH_TEXTURE(_CameraDepthTexture, uv + k)
+        UNITY_SAMPLE_DEPTH_TEXTURE(_CameraDepthTexture, uv - k),
+        UNITY_SAMPLE_DEPTH_TEXTURE(_CameraDepthTexture, uv + float2(k.x, -k.y)),
+        UNITY_SAMPLE_DEPTH_TEXTURE(_CameraDepthTexture, uv + float2(-k.x, k.y)),
+        UNITY_SAMPLE_DEPTH_TEXTURE(_CameraDepthTexture, uv + k)
         );
 
 #if defined(UNITY_REVERSED_Z)
@@ -79,7 +79,7 @@ float2 GetClosestFragment(float2 uv)
     #define COMPARE_DEPTH(a, b) step(a, b)
 #endif
 
-    float3 result = float3(0.0, 0.0, SAMPLE_DEPTH_TEXTURE(_CameraDepthTexture, uv));
+    float3 result = float3(0.0, 0.0, UNITY_SAMPLE_DEPTH_TEXTURE(_CameraDepthTexture, uv));
     result = lerp(result, float3(-1.0, -1.0, neighborhood.x), COMPARE_DEPTH(neighborhood.x, result.z));
     result = lerp(result, float3( 1.0, -1.0, neighborhood.y), COMPARE_DEPTH(neighborhood.y, result.z));
     result = lerp(result, float3(-1.0,  1.0, neighborhood.z), COMPARE_DEPTH(neighborhood.z, result.z));

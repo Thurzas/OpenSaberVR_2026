@@ -1,63 +1,36 @@
-﻿using System.Collections;
+using System.Collections;
 using UnityEngine;
+using UnityEngine.PostProcessing;
 using UnityEngine.SceneManagement;
-using VRTK;
 
 public class SceneHandling : MonoBehaviour
 {
-    GameObject LeftController;
-    GameObject RightController;
+    [SerializeField] private GameObject LeftSaber;
+    [SerializeField] private GameObject LeftShaft;
+    [SerializeField] private GameObject LeftModel;
 
-    GameObject LeftSaber;
-    GameObject LeftShaft;
-    GameObject LeftModel;
+    [SerializeField] private GameObject RightSaber;
+    [SerializeField] private GameObject RightShaft;
+    [SerializeField] private GameObject RightModel;
 
-    GameObject RightSaber;
-    GameObject RightShaft;
-    GameObject RightModel;
+    [SerializeField] private Behaviour RightUIPointer;
 
-    VRTK_Pointer RightUIPointer;
-
-    bool VRTK_Loaded = false;
-
-    private void Awake()
-    {
-        VRTK_SDKManager.SubscribeLoadedSetupChanged(VRSetupLoaded);
-    }
-
-    private void VRSetupLoaded(VRTK_SDKManager sender, VRTK_SDKManager.LoadedSetupChangeEventArgs e)
-    {
-        LeftController = e.currentSetup.actualLeftController;
-        RightController = e.currentSetup.actualRightController;
-
-        LeftSaber = LeftController.transform.Find("Saber").gameObject;
-        LeftShaft = LeftController.transform.Find("Shaft").gameObject;
-        LeftModel = LeftController.transform.Find("Model").gameObject;
-
-        RightSaber = RightController.transform.Find("Saber").gameObject;
-        RightShaft = RightController.transform.Find("Shaft").gameObject;
-        RightModel = RightController.transform.Find("Model").gameObject;
-
-        RightUIPointer = RightController.transform.Find("RightController").GetComponent<VRTK_Pointer>();
-
-        VRTK_Loaded = true;
-        MenuSceneLoaded();
-    }
+    [SerializeField] private PostProcessingBehaviour PostProcessing;
+    [SerializeField] private PostProcessingProfile MenuProfile;
+    [SerializeField] private PostProcessingProfile GameplayProfile;
 
     private void MenuSceneLoaded()
     {
-        if (!VRTK_Loaded)
-            return;
-
         LeftSaber.SetActive(false);
         LeftShaft.SetActive(false);
-        
+
         RightSaber.SetActive(false);
         RightShaft.SetActive(false);
 
         LeftModel.SetActive(true);
         RightModel.SetActive(true);
         RightUIPointer.enabled = true;
+        PostProcessing.profile = MenuProfile;
     }
 
     private void SaberSceneLoaded()
@@ -71,11 +44,7 @@ public class SceneHandling : MonoBehaviour
         LeftModel.SetActive(false);
         RightModel.SetActive(false);
         RightUIPointer.enabled = false;
-    }
-
-    private void OnDestroy()
-    {
-        VRTK_SDKManager.UnsubscribeLoadedSetupChanged(VRSetupLoaded);
+        PostProcessing.profile = GameplayProfile;
     }
 
     private void Start()
@@ -85,10 +54,7 @@ public class SceneHandling : MonoBehaviour
             StartCoroutine(LoadScene("Menu", LoadSceneMode.Additive));
         }
 
-        if (VRTK_Loaded)
-        {
-            MenuSceneLoaded();
-        }
+        MenuSceneLoaded();
     }
 
     internal IEnumerator LoadScene(string sceneName, LoadSceneMode mode)
