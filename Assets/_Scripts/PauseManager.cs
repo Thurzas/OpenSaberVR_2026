@@ -87,6 +87,8 @@ public class PauseManager : MonoBehaviour
         yield return SceneManager.UnloadSceneAsync("Pause_Menu");
         yield return SceneManager.UnloadSceneAsync("OpenSaber");
         yield return SceneManager.LoadSceneAsync("OpenSaber", LoadSceneMode.Additive);
+        yield return SceneHandling.UnloadScene("Score_UI");        
+        yield return SceneHandling.LoadScene("Score_UI", LoadSceneMode.Additive);    
     }
 
     public void QuitToMenu()
