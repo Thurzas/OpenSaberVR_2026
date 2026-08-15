@@ -40,21 +40,27 @@ public class Saber : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(transform.position, transform.forward, out hit, 1f, layer))
         {
+            var swingDirection = transform.position - previousPos;
+
             if (!string.IsNullOrWhiteSpace(hit.transform.tag) && hit.transform.CompareTag("CubeNonDirection"))
             {
-                if (Vector3.Angle(transform.position - previousPos, hit.transform.up) > 130 ||
-                    Vector3.Angle(transform.position - previousPos, hit.transform.right) > 130 ||
-                    Vector3.Angle(transform.position - previousPos, -hit.transform.up) > 130 ||
-                    Vector3.Angle(transform.position - previousPos, -hit.transform.right) > 130)
+                var bestAngle = Mathf.Max(
+                    Vector3.Angle(swingDirection, hit.transform.up),
+                    Vector3.Angle(swingDirection, hit.transform.right),
+                    Vector3.Angle(swingDirection, -hit.transform.up),
+                    Vector3.Angle(swingDirection, -hit.transform.right));
+
+                if (bestAngle > 130)
                 {
-                    SliceObject(hit.transform);
+                    SliceObject(hit, bestAngle);
                 }
             }
             else
             {
-                if (Vector3.Angle(transform.position - previousPos, hit.transform.up) > 130)
+                var angle = Vector3.Angle(swingDirection, hit.transform.up);
+                if (angle > 130)
                 {
-                    SliceObject(hit.transform);
+                    SliceObject(hit, angle);
                 }
             }
         }
@@ -62,8 +68,9 @@ public class Saber : MonoBehaviour
         previousPos = transform.position;
     }
 
-    private void SliceObject(Transform hittedObject)
+    private void SliceObject(RaycastHit hit, float angle)
     {
+        var hittedObject = hit.transform;
         var cutted = slicer.SliceObject(hittedObject.gameObject);
         var go = Instantiate(hittedObject.gameObject);
 
@@ -85,6 +92,9 @@ public class Saber : MonoBehaviour
         }
 
         go.transform.SetPositionAndRotation(hittedObject.position, hittedObject.rotation);
+
+        var centerDistance = Vector3.Distance(hit.point, hittedObject.position);
+        ScoreManager.Instance?.RegisterHit(angle, centerDistance, hit.point);
 
         Pulse();
 
