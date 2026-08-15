@@ -40,6 +40,8 @@ public class NotesSpawner : MonoBehaviour
     private readonly double beatWarmupSpeed = BeatsConstants.BEAT_WARMUP_SPEED;
 
     private AudioSource audioSource;
+    public AudioSource AudioSource => audioSource;
+    public bool IsPaused { get; set; }
 
     private SongSettings Songsettings;
     private SceneHandling SceneHandling;
@@ -168,7 +170,7 @@ public class NotesSpawner : MonoBehaviour
 
         if (BeatsPreloadTime == null)
         {
-            if (!audioSource.isPlaying)
+            if (!audioSource.isPlaying && !IsPaused)
             {
                 if (!menuLoadInProgress)
                 {
