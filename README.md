@@ -1,28 +1,38 @@
 ![alt text](https://img.itch.zone/aW1nLzIxNzU5MTkucG5n/original/88KBuM.png "")
 # Open Saber VR 2026
 
-Open Saber VR is an open source clone of the famous and fabolous game Beat Saber. 
+Open Saber VR is an open source clone of the famous and fabulous game Beat Saber. 
 
-    This fork is based on the first repository of 2018. I'm actually updating preparing this roadmap right now.
+    Warning : This fork is based on the first repository of 2018. I'm actually updating and adapting  this project for building its own personality, seek the roadmap below.
 
 
 Now you would maybe ask yourself what is a Beat Saber clone without any music? Yeah, you are right, it's nothing. But I have some vey good answer to this. Because of the great and wide community of the Beat Saber modders and there custom songs, you can use ANY song from their website and it will work in Open Saber VR. So just go to their websites [BeatSaver](https://beatsaver.com), [BeastSaber](https://bsaber.com) and download any song you want.
 
+## Updates
+- First objective was to update the VR management to make it works. So I moved the pipeline to openXR.
+- Pause state is here now ! you can pause anytime with the left controller's primary button.
+
+- Now that I finished the Arcade Update, Score, combo and multiplier are tracked live.
+
+- There is a local leaderboard per songs now.
+
 ## Import songs
 Just download any song from BeatSaver or BeastSaber and unzip it to the "OpenSaberVR_data/Playlists" folder. Make sure that each song has its own folder in the Playlists folder. After that run Open Saber VR and the song should be displayed in the menu. Both the classic (`_notes`) and current v3 (`colorNotes`) map formats are supported.
+your Playlist should have folders with your song datas inside like this :
+![alt text](image-2.png)
 
+And a song should look, at least, like this :
+![alt text](image-3.png)
+beware of what you download, sometimes, there is only expert or expert+ difficulty on a song... reason I want to make an editor to make it easier to modify or personalise.
 
 ## Gameplay
 ![alt text](https://img.itch.zone/aW1hZ2UvNDMyMDUzLzIyNDc2OTMucG5n/original/%2Bx5231.png "")
 If you know how to play Beat Saber then you are good to go. If not then it's really simple to play, just cut the notes (beat blocks) at the side where the glow bar is with the saber in the same color. The blue saber is the right hand, the red saber is the left hand. The notes will be only sliced if you hit with the correct saber on the correct side. Otherwise the block will just went through.
 
-There is no energy or anything right now, so you can't "loose" a game, the song will play until the end. Score, combo and multiplier are tracked live (see "Updates in this fork" above) — you can pause anytime with the left controller's primary button.
-
-After the song finished, just wait for 5 seconds and you will be pushed back to the main menu where you can select another song.
-
+There is no energy or anything right now, so you can't "loose" a game, the song will play until the end.
 
 ## Features
- - fully support for the songs from BeastSaber and BeatSaver
+ - this project sopport V2 songs from BeastSaber and BeatSaber. I'm still working on support for the V3 and V4 songs.
  - arcade-style scoring with combo multiplier (see "Updates in this fork")
 
 ## Hints
