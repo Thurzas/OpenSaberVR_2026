@@ -233,6 +233,30 @@ public class NotesSpawner : MonoBehaviour
     {
         yield return new WaitForSeconds(5);
 
+        if (!SceneHandling.IsSceneLoaded("leaderboard_UI"))
+        {
+            yield return SceneManager.LoadSceneAsync("leaderboard_UI", LoadSceneMode.Additive);
+        }
+
+        if (!SceneHandling.IsSceneLoaded("NewRecord_UI"))
+        {
+            yield return SceneManager.LoadSceneAsync("NewRecord_UI", LoadSceneMode.Additive);
+        }
+
+        var prompt = FindAnyObjectByType<NewRecordPrompt>();
+        if (prompt != null)
+        {
+            var songId = Path.GetFileName(Songsettings.CurrentSong.Path);
+            var score = ScoreManager.Instance != null ? ScoreManager.Instance.Score : 0;
+
+            prompt.TryShow(songId, Songsettings.CurrentSong.SelectedDifficulty, score, 5);
+
+            while (prompt.IsShowing)
+            {
+                yield return null;
+            }
+        }
+
         yield return SceneHandling.LoadScene("Menu", LoadSceneMode.Additive);
         yield return SceneHandling.UnloadScene("OpenSaber");
     }
@@ -291,7 +315,7 @@ public class NotesSpawner : MonoBehaviour
                 rotation = 225f;
                 break;
             case CutDirection.BOTTOMRIGHT:
-                rotation = 125f;
+                rotation = 135f;
                 break;
             case CutDirection.NONDIRECTION:
                 rotation = 0f;
