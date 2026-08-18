@@ -36,6 +36,11 @@ public class SceneHandling : MonoBehaviour
         {
             StartCoroutine(UnloadScoreUIRoutine());
         }
+
+        if (!IsSceneLoaded("leaderboard_UI"))
+        {
+            StartCoroutine(LoadLeaderboardUIRoutine());
+        }
     }
 
     private void SaberSceneLoaded()
@@ -52,6 +57,15 @@ public class SceneHandling : MonoBehaviour
         PostProcessing.profile = GameplayProfile;
 
         StartCoroutine(LoadScoreUIRoutine());
+
+        if (IsSceneLoaded("leaderboard_UI"))
+        {
+            StartCoroutine(UnloadLeaderboardUIRoutine());
+        }
+        if (IsSceneLoaded("NewRecord_UI"))
+        {
+            StartCoroutine(UnloadNewRecordUIRoutine());
+        }
     }
 
     private IEnumerator LoadScoreUIRoutine()
@@ -62,6 +76,24 @@ public class SceneHandling : MonoBehaviour
     private IEnumerator UnloadScoreUIRoutine()
     {
         yield return SceneManager.UnloadSceneAsync("Score_UI");
+    }
+
+    private IEnumerator LoadLeaderboardUIRoutine()
+    {
+        yield return SceneManager.LoadSceneAsync("leaderboard_UI", LoadSceneMode.Additive);
+    }
+
+    private IEnumerator LoadNewRecordUIRoutine()
+    {
+        yield return SceneManager.LoadSceneAsync("NewRecord_UI", LoadSceneMode.Additive);
+    }
+    private IEnumerator UnloadLeaderboardUIRoutine()
+    {
+        yield return SceneManager.UnloadSceneAsync("leaderboard_UI");
+    }
+    private IEnumerator UnloadNewRecordUIRoutine()
+    {
+        yield return SceneManager.UnloadSceneAsync("NewRecord_UI");
     }
 
     private void Start()
@@ -104,4 +136,11 @@ public class SceneHandling : MonoBehaviour
 
         return true;
     }
+
+    public GameObject GetLeftSaber { get => LeftSaber; }
+    public GameObject GetLeftShaft { get => LeftShaft; }
+    public GameObject GetLeftModel { get => LeftModel; }
+    public GameObject GetRightSaber { get => RightSaber; }
+    public GameObject GetRightShaft { get => RightShaft; }
+    public GameObject GetRightModel { get => RightModel; }
 }

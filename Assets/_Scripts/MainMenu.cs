@@ -63,6 +63,16 @@ public class MainMenu : MonoBehaviour
         }
 
         StartCoroutine(PreviewSong(Songsettings.CurrentSong.AudioFilePath));
+        NotifyLeaderboard();
+    }
+
+    private void NotifyLeaderboard()
+    {
+        var leaderboard = FindAnyObjectByType<LeaderboardUI>();
+        if (leaderboard != null)
+        {
+            leaderboard.OnSongChanged();
+        }
     }
 
     public IEnumerator PreviewSong(string audioFilePath)
@@ -120,6 +130,7 @@ public class MainMenu : MonoBehaviour
         }
 
         StartCoroutine(PreviewSong(Songsettings.CurrentSong.AudioFilePath));
+        NotifyLeaderboard();
     }
 
     public void PreviousSong()
@@ -141,6 +152,7 @@ public class MainMenu : MonoBehaviour
         }
 
         StartCoroutine(PreviewSong(Songsettings.CurrentSong.AudioFilePath));
+        NotifyLeaderboard();
     }
 
     public void LoadSong()
